@@ -1,12 +1,11 @@
 using UnityEngine;
 
+[RequireComponent(typeof(Renderer))]
 [RequireComponent(typeof(Rigidbody))]
 public class Cube : MonoBehaviour
 {
     public int ChanceCreate = 100;
 
-    [SerializeField] private Camera _camera;
-    [SerializeField] private Ray _ray;
     [SerializeField] private CubeCreator _cubeCreator;
     [SerializeField] private float _explosionRadius;
     [SerializeField] private float _explosionForce;
@@ -14,32 +13,30 @@ public class Cube : MonoBehaviour
     [SerializeField] private int _maxCubeCreate = 6;
 
     private int _maxChanceCreate = 100;
-    private bool _isDivide => Utils.GetRandomInt(0, _maxChanceCreate) < ChanceCreate;
 
-    private void Update()
+    private bool IsDivide => Random.Range(0, _maxChanceCreate + 1) < ChanceCreate;
+
+    private void OnEnable()
     {
-        if (Input.GetMouseButtonDown(0))
-        {
-            RaycastHit hit;
+        GetComponent<Renderer>().material.color = Random.ColorHSV(0f, 1f, 1f, 1f, 0.5f, 1f);
+    }
 
-            _ray = _camera.ScreenPointToRay(Input.mousePosition);
-            
-            if (Physics.Raycast(_ray, out hit, Mathf.Infinity) && hit.transform.gameObject == gameObject)
-            {
-                Explode();
-                Destroy(gameObject);
-            }
-        }
+    private void OnMouseDown()
+    {
+        Explode();
+        Destroy(gameObject);
     }
 
     private void Explode()
     {
-        if (_isDivide)
+        if (IsDivide)
         {
-            int cubeNumbers = Utils.GetRandomInt(_minCubeCreate, _maxCubeCreate);
+            int cubeNumbers = Random.Range(_minCubeCreate, _maxCubeCreate + 1);
 
             for (int i = 0; i < cubeNumbers; i++)
-                _cubeCreator.Create(ChanceCreate).AddExplosionForce(_explosionForce, transform.position, _explosionRadius);
+            {
+                GameObject cube = _cubeCreator.Create(gameObject);
+            }
         }
     }
 }
