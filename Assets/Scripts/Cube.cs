@@ -14,6 +14,7 @@ public class Cube : MonoBehaviour
     [SerializeField] private int _maxCubeCreate = 6;
 
     private int _maxChanceCreate = 100;
+    private bool _isDivide => Utils.GetRandomInt(0, _maxChanceCreate) < ChanceCreate;
 
     private void Update()
     {
@@ -33,17 +34,12 @@ public class Cube : MonoBehaviour
 
     private void Explode()
     {
-        if (IsDivide())
+        if (_isDivide)
         {
             int cubeNumbers = Utils.GetRandomInt(_minCubeCreate, _maxCubeCreate);
 
             for (int i = 0; i < cubeNumbers; i++)
                 _cubeCreator.Create(ChanceCreate).AddExplosionForce(_explosionForce, transform.position, _explosionRadius);
         }
-    }
-
-    private bool IsDivide()
-    {
-        return Utils.GetRandomInt(0, _maxChanceCreate) < ChanceCreate;
     }
 }
