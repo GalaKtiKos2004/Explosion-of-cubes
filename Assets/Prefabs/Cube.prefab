@@ -14,7 +14,6 @@ GameObject:
   - component: {fileID: 3949924734754498896}
   - component: {fileID: 6053568111370204090}
   - component: {fileID: 8405727482037029873}
-  - component: {fileID: 4975608146528372103}
   m_Layer: 0
   m_Name: Cube
   m_TagString: Untagged
@@ -147,23 +146,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f2955c70495d19f42a2c4965e5e3c194, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ChanceCreate: 100
-  _camera: {fileID: 0}
-  _cubeCreator: {fileID: 4975608146528372103}
+  _cubeCreator: {fileID: 0}
   _explosionRadius: 25
   _explosionForce: 700
   _minCubeCreate: 2
   _maxCubeCreate: 6
---- !u!114 &4975608146528372103
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5740523177503315482}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5350fde583ceea944a5ea44a523b1c81, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _cubePrefab: {fileID: 5740523177503315482}
+  _chanceDivider: 2
+  _scaleDivider: 2

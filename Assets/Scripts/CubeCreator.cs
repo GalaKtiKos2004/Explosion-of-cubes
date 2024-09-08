@@ -2,16 +2,29 @@ using UnityEngine;
 
 public class CubeCreator : MonoBehaviour
 {
-    public GameObject Create(Cube explodedCube)
+    private void OnEnable()
     {
-        GameObject cube;
-        int chanceDivider = 2;
+        foreach (var cube in FindObjectsOfType<Cube>())
+        {
+            cube.Dividing += Create;
+        }
+    }
 
-        cube = Instantiate(explodedCube.gameObject, transform.position, Quaternion.identity);
-        cube.transform.localScale /= 2;
-        cube.GetComponent<Cube>().ReduceChance();
-        cube.GetComponent<Cube>().ReduceScale();
+    private void OnDisable()
+    {
+        foreach (var cube in FindObjectsOfType<Cube>())
+        {
+            cube.Dividing -= Create;
+        }
+    }
 
-        return cube;
+    public void Create(Cube explodedCube)
+    {
+        Cube cube;
+
+        cube = Instantiate(explodedCube, explodedCube.transform.position, Quaternion.identity);
+        cube.Dividing += Create;
+        cube.ReduceScale();
+        cube.ReduceChance();
     }
 }
