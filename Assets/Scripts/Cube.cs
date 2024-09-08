@@ -4,17 +4,28 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class Cube : MonoBehaviour
 {
-    public int ChanceCreate = 100;
-
     [SerializeField] private CubeCreator _cubeCreator;
     [SerializeField] private float _explosionRadius;
     [SerializeField] private float _explosionForce;
     [SerializeField] private int _minCubeCreate = 2;
     [SerializeField] private int _maxCubeCreate = 6;
+    [SerializeField] private int _chanceDivider = 2;
+    [SerializeField] private int _scaleDivider = 2;
 
     private int _maxChanceCreate = 100;
+    private int _chanceCreate = 100;
 
-    private bool IsDivide => Random.Range(0, _maxChanceCreate + 1) < ChanceCreate;
+    private bool IsDivide => Random.Range(0, _maxChanceCreate + 1) < _chanceCreate;
+
+    public void ReduceScale()
+    {
+        transform.localScale /= _scaleDivider;
+    }
+
+    public void ReduceChance()
+    {
+        _chanceCreate /= _chanceDivider;
+    }
 
     private void OnEnable()
     {
@@ -35,7 +46,7 @@ public class Cube : MonoBehaviour
 
             for (int i = 0; i < cubeNumbers; i++)
             {
-                GameObject cube = _cubeCreator.Create(gameObject);
+                GameObject cube = _cubeCreator.Create(this);
             }
         }
     }
