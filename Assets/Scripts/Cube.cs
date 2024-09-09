@@ -5,8 +5,6 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class Cube : MonoBehaviour
 {
-    [SerializeField] private float _explosionRadius;
-    [SerializeField] private float _explosionForce;
     [SerializeField] private int _minCubeCreate = 2;
     [SerializeField] private int _maxCubeCreate = 6;
     [SerializeField] private int _chanceDivider = 2;
@@ -18,6 +16,7 @@ public class Cube : MonoBehaviour
     private bool IsDivide => UnityEngine.Random.Range(0, _maxChanceCreate + 1) < _chanceCreate;
 
     public event Action<Cube> Dividing;
+    public event Action<Cube> Removing;
 
     private void OnEnable()
     {
@@ -42,6 +41,8 @@ public class Cube : MonoBehaviour
 
     private void Explode()
     {
+        Removing?.Invoke(this);
+
         if (IsDivide)
         {
             int cubeNumbers = UnityEngine.Random.Range(_minCubeCreate, _maxCubeCreate + 1);
