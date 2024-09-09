@@ -24,21 +24,21 @@ public class CubeCreator : MonoBehaviour
         }
     }
 
-    public void DeleteCube(Cube cube)
+    private void DeleteCube(Cube cube)
     {
         _cubes.Remove(cube);
     }
 
-    public void Create(Cube explodedCube)
+    private void Create(Cube explodedCube)
     {
-        Cube cube;
-
-        cube = Instantiate(explodedCube, explodedCube.transform.position, Quaternion.identity);
+        Cube cube = Instantiate(explodedCube, explodedCube.transform.position, Quaternion.identity);
         _cubes.Add(cube);
         cube.Dividing += Create;
         cube.Removing += DeleteCube;
-        cube.ReduceScale();
-        cube.ReduceChance();
-        _exploder.Explode(cube.GetComponent<Rigidbody>());
+        cube.Init();
+
+        Rigidbody cubeRigidbody = cube.GetComponent<Rigidbody>();
+        if (cubeRigidbody != null)
+            _exploder.Explode(cubeRigidbody);
     }
 }

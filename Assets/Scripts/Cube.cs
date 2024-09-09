@@ -5,15 +5,13 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class Cube : MonoBehaviour
 {
-    [SerializeField] private int _minCubeCreate = 2;
-    [SerializeField] private int _maxCubeCreate = 6;
+    [SerializeField] private int _minCreate = 2;
+    [SerializeField] private int _maxCreate = 6;
     [SerializeField] private int _chanceDivider = 2;
     [SerializeField] private int _scaleDivider = 2;
 
     private int _maxChanceCreate = 100;
     private int _chanceCreate = 100;
-
-    private bool IsDivide => UnityEngine.Random.Range(0, _maxChanceCreate + 1) < _chanceCreate;
 
     public event Action<Cube> Dividing;
     public event Action<Cube> Removing;
@@ -25,17 +23,14 @@ public class Cube : MonoBehaviour
 
     private void OnMouseDown()
     {
+        Debug.Log("Mouse Down");
         Explode();
         Destroy(gameObject);
     }
 
-    public void ReduceScale()
+    public void Init()
     {
         transform.localScale /= _scaleDivider;
-    }
-
-    public void ReduceChance()
-    {
         _chanceCreate /= _chanceDivider;
     }
 
@@ -43,14 +38,19 @@ public class Cube : MonoBehaviour
     {
         Removing?.Invoke(this);
 
-        if (IsDivide)
+        if (CanDivide())
         {
-            int cubeNumbers = UnityEngine.Random.Range(_minCubeCreate, _maxCubeCreate + 1);
+            int cubeNumbers = UnityEngine.Random.Range(_minCreate, _maxCreate + 1);
 
             for (int i = 0; i < cubeNumbers; i++)
             {
                 Dividing?.Invoke(this);
             }
         }
+    }
+
+    private bool CanDivide()
+    {
+        return UnityEngine.Random.Range(0, _maxChanceCreate + 1) < _chanceCreate;
     }
 }
